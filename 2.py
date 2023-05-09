@@ -82,7 +82,7 @@ if choose == 'EDA' and introduce == False:
     st.write(data)
     df_col = data.columns
     st.sidebar.header('변수 선택')
-    select_multi_species = st.sidebar.selectbox('확인하고 싶은 변수 선택',[df_col[1], df_col[2], df_col[3], df_col[4], df_col[5]])
+    select_multi_species = st.sidebar.selectbox('확인하고 싶은 변수 선택',[df_col[1], df_col[2], df_col[3], df_col[4], df_col[5], df_col[6], df_col[7], df_col[8]])
     st.write(select_multi_species)
 
     if select_multi_species:
