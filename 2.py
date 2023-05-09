@@ -42,7 +42,7 @@ if introduce == True:
     col1.checkbox('총괄팀장 : 유창연')
     col2.checkbox('분석팀장 : 서영석')
     col3.checkbox('개발팀장 : 박진환')
-    col4.checkbox('    팀원 : 서민혁')
+    col4.checkbox('팀원 : 서민혁')
     st.write('\n')
     st.write('\n')
     st.write('\n')
