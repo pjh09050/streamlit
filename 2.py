@@ -6,6 +6,10 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import io
+import matplotlib.pyplot as plt
+import seaborn as sns
+import vif
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 # 페이지 너비 조정 
 st.set_page_config(
@@ -26,26 +30,22 @@ st.markdown(
 )
 ############################################################################
 # title을 출력합니다.
-st.sidebar.title('주제 소개')
 introduce = st.sidebar.checkbox('주제 소개')
 if introduce == True:
     st.title('주제')
     st.write('\n')
     # header
-    st.header('소주제')
+    st.header('예시 데이터')
     st.write('\n')
     # subheader
-    st.subheader('팀원')
+    st.subheader('데이터 소개 및 진행 방법')
     st.write('\n')
     # layout(checkbox 만들기)
     col1, col2, col3, col4 = st.columns([2,2,2,2])
-    col1.checkbox('총괄팀장 : 유창연')
-    col2.checkbox('분석팀장 : 서영석')
-    col3.checkbox('개발팀장 : 박진환')
-    col4.checkbox('팀원 : 서민혁')
-    st.write('\n')
-    st.write('\n')
-    st.write('\n')
+    cl1 = col1.checkbox('EDA 사용법')
+    cl2 = col2.checkbox('방법론 1 사용법')
+    cl3 = col3.checkbox('방법론 2 사용법')
+    cl4 = col4.checkbox('결론 도출 방법')
     st.write('\n')
 
     st.subheader('프로젝트 소개와 분석 방법, 이것저것 소개')
@@ -78,21 +78,48 @@ with st.sidebar:
     )
 
 if choose == 'EDA' and introduce == False:
-    st.write('로드된 데이터와 크기:', data.shape)
-    st.write(data)
+    data_check = st.checkbox('파일 데이터 확인')
+    if data_check:
+        st.write('로드된 데이터와 크기:', data.shape)
+        st.write(data)
     df_col = data.columns
-    st.sidebar.header('변수 선택')
-    select_multi_species = st.sidebar.selectbox('확인하고 싶은 변수 선택',[df_col[1], df_col[2], df_col[3], df_col[4], df_col[5], df_col[6], df_col[7], df_col[8]])
-    st.write(select_multi_species)
+    #st.sidebar.header('변수 선택')
+    #select_multi_species = st.sidebar.selectbox('확인하고 싶은 변수 선택',df_col)
+    #st.write(select_multi_species)
+    #st.sidebar.header('correlation heatmap')
+    #select_heatmap = st.sidebar.checkbox('히트맵 그리기')
+    species_graph = st.checkbox('변수 확인 그래프 그리기')
+    if species_graph:
+        select_multi_species = st.selectbox('확인하고 싶은 변수 선택',df_col)
+        if select_multi_species:
+            st.subheader(select_multi_species + ' 그래프')
+            select = data[select_multi_species]
+            fig = px.bar(select, x=data['datetime'], y=select.values)
+            fig.update_layout(width=1100, height=500)
+            st.plotly_chart(fig)         
+        else:
+            st.write('선택된 변수가 없습니다.')
 
-    if select_multi_species:
-        st.subheader(select_multi_species + ' 그래프')
-        select = data[select_multi_species]
-        fig = px.bar(select, x=select.index, y=select.values)
-        fig.update_layout(width=1100, height=500)
-        st.plotly_chart(fig)
-    else:
-        st.write('선택된 변수가 없습니다.')
+    select_heatmap = st.checkbox('correlation 확인')
+    if select_heatmap:
+        mask = np.zeros_like(data.corr(), dtype=np.bool_)
+        mask[np.triu_indices_from(mask)] = True
+
+        plt.figure(figsize=(10,4))
+        sns.heatmap(data = data.corr(), annot=True, mask = mask,
+                    fmt = '.2f', linewidths=.5, cmap='Blues')
+        st.pyplot(plt.gcf())
+
+    check_vif = st.checkbox('VIF 확인')
+    if check_vif:
+        df2 = data.drop(['datetime'], axis=1)
+        vif = pd.DataFrame()
+        vif["features"] = df2.columns 
+        vif["VIF Factor"] = [variance_inflation_factor(df2.values, i) for i in range(df2.shape[1])]
+        vif = vif.sort_values(by="VIF Factor", ascending=False)
+        vif = vif.reset_index().drop(columns='index')
+        vif
+        
 
 if choose == '방법론1' and introduce == False:
     st.subheader('선택한 방법론 : 방법론1')
