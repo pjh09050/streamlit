@@ -30,7 +30,7 @@ st.markdown(
 )
 ############################################################################
 # title을 출력합니다.
-introduce = st.sidebar.checkbox('주제 소개')
+introduce = st.sidebar.checkbox('프로젝트 소개')
 if introduce == True:
     st.title('주제')
     st.write('\n')
@@ -54,14 +54,16 @@ if introduce == True:
 st.sidebar.header('데이터 불러오기')
 # 파일 업로드
 df = st.sidebar.file_uploader("CSV 파일 업로드", type=["csv"])
-
 if df is not None:
     try:
         # Pandas DataFrame으로 데이터 로드
         data = pd.read_csv(df)
-        # 로드된 데이터 출력
-    except Exception as e:
-        st.write('파일을 로드할 수 없습니다.', e)
+    except:
+        # 로드된 데이터가 없는 경우, 로컬 파일에서 데이터 로드
+        data = pd.read_csv("C:/Users/user/github/streamlit/final_df.csv")
+else:
+    # 로드된 데이터가 없는 경우, 로컬 파일에서 데이터 로드
+    data = pd.read_csv("C:/Users/user/github/streamlit/final_df.csv")
 
 
 with st.sidebar:
@@ -78,6 +80,7 @@ with st.sidebar:
     )
 
 if choose == 'EDA' and introduce == False:
+    st.subheader('1. 데이터 확인')
     data_check = st.checkbox('파일 데이터 확인')
     if data_check:
         st.write('로드된 데이터와 크기:', data.shape)
@@ -88,6 +91,8 @@ if choose == 'EDA' and introduce == False:
     #st.write(select_multi_species)
     #st.sidebar.header('correlation heatmap')
     #select_heatmap = st.sidebar.checkbox('히트맵 그리기')
+
+    st.subheader('2. 변수 확인')
     species_graph = st.checkbox('변수 확인 그래프 그리기')
     if species_graph:
         select_multi_species = st.selectbox('확인하고 싶은 변수 선택',df_col)
@@ -100,6 +105,7 @@ if choose == 'EDA' and introduce == False:
         else:
             st.write('선택된 변수가 없습니다.')
 
+    st.subheader('3. Correlation')
     select_heatmap = st.checkbox('correlation 확인')
     if select_heatmap:
         mask = np.zeros_like(data.corr(), dtype=np.bool_)
@@ -110,6 +116,7 @@ if choose == 'EDA' and introduce == False:
                     fmt = '.2f', linewidths=.5, cmap='Blues')
         st.pyplot(plt.gcf())
 
+    st.subheader('4. VIF')
     check_vif = st.checkbox('VIF 확인')
     if check_vif:
         df2 = data.drop(['datetime'], axis=1)
