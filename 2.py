@@ -74,7 +74,7 @@ if df is not None:
     except:
         data = pd.read_csv("C:/Users/user/github/streamlit/final_df.csv")
 else:
-    data = pd.read_csv("C:/../../../../final_df.csv")
+    data = pd.read_csv("final_df.csv")
 
 
 with st.sidebar:
