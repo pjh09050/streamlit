@@ -5,4 +5,4 @@ plotly.express
 streamlit_option_menu
 matplotlib
 seaborn
-variance_inflation_factor
+statsmodels
