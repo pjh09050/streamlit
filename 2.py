@@ -30,7 +30,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 ############################################################################
-introduce = st.sidebar.checkbox('프로젝트 소개')
+introduce = st.sidebar.checkbox('프로젝트 소개', value=True)
 if introduce == True:
     st.title('주제')
     st.write('\n')
