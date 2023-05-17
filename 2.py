@@ -5,7 +5,8 @@ from  PIL import Image
 import numpy as np
 import pandas as pd
 import plotly.express as px
-import io
+import requests
+from io import StringIO
 import matplotlib.pyplot as plt
 import seaborn as sns
 import vif
@@ -72,9 +73,11 @@ if df is not None:
     try:
         data = pd.read_csv(df)
     except:
-        data = pd.read_csv("C:/Users/user/github/streamlit/final_df.csv")
+        data_url = "https://raw.githubusercontent.com/pjh09050/streamlit/main/final_df.csv"
+        data = pd.read_csv(data_url)
 else:
-    data = pd.read_csv("final_df.csv")
+    data_url = "https://raw.githubusercontent.com/pjh09050/streamlit/main/final_df.csv"
+    data = pd.read_csv(data_url)
 
 
 with st.sidebar:
