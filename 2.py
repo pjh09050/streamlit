@@ -29,7 +29,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 ############################################################################
-# title을 출력합니다.
 introduce = st.sidebar.checkbox('프로젝트 소개')
 if introduce == True:
     st.title('주제')
@@ -43,27 +42,39 @@ if introduce == True:
     # layout(checkbox 만들기)
     col1, col2, col3, col4 = st.columns([2,2,2,2])
     cl1 = col1.checkbox('EDA 사용법')
+    st.write('\n')
+    if cl1 == True:
+        st.subheader('EDA 종류')
+        st.write('correlation은 이런걸 확인할 수 있음 등등')
     cl2 = col2.checkbox('방법론 1 사용법')
+    st.write('\n')
+    if cl2 == True:
+        st.subheader('방법론 1 사용법')
+        st.write('방법론 1은 이렇게 사용하여 이런 결과를 볼 수 있음')
     cl3 = col3.checkbox('방법론 2 사용법')
+    st.write('\n')
+    if cl3 == True:
+        st.subheader('방법론 2 사용법')
+        st.write('방법론 2는 이렇게 사용하여 이런 결과를 볼 수 있음')
     cl4 = col4.checkbox('결론 도출 방법')
+    st.write('\n')
+    if cl4 == True:
+        st.subheader('결론 도출 방법')
+        st.write('이런과정으로 결론을 이렇게 도출할 수 있음')
     st.write('\n')
 
     st.subheader('프로젝트 소개와 분석 방법, 이것저것 소개')
 ############################################################################
 
 st.sidebar.header('데이터 불러오기')
-# 파일 업로드
 df = st.sidebar.file_uploader("CSV 파일 업로드", type=["csv"])
 if df is not None:
     try:
-        # Pandas DataFrame으로 데이터 로드
         data = pd.read_csv(df)
     except:
-        # 로드된 데이터가 없는 경우, 로컬 파일에서 데이터 로드
         data = pd.read_csv("C:/Users/user/github/streamlit/final_df.csv")
 else:
-    # 로드된 데이터가 없는 경우, 로컬 파일에서 데이터 로드
-    data = pd.read_csv("C:/Users/user/github/streamlit/final_df.csv")
+    data = pd.read_csv("C:/../../../../final_df.csv")
 
 
 with st.sidebar:
@@ -86,11 +97,6 @@ if choose == 'EDA' and introduce == False:
         st.write('로드된 데이터와 크기:', data.shape)
         st.write(data)
     df_col = data.columns
-    #st.sidebar.header('변수 선택')
-    #select_multi_species = st.sidebar.selectbox('확인하고 싶은 변수 선택',df_col)
-    #st.write(select_multi_species)
-    #st.sidebar.header('correlation heatmap')
-    #select_heatmap = st.sidebar.checkbox('히트맵 그리기')
 
     st.subheader('2. 변수 확인')
     species_graph = st.checkbox('변수 확인 그래프 그리기')
@@ -106,7 +112,7 @@ if choose == 'EDA' and introduce == False:
             st.write('선택된 변수가 없습니다.')
 
     st.subheader('3. Correlation')
-    select_heatmap = st.checkbox('correlation 확인')
+    select_heatmap = st.checkbox('Heatmap 그리기')
     if select_heatmap:
         mask = np.zeros_like(data.corr(), dtype=np.bool_)
         mask[np.triu_indices_from(mask)] = True
