@@ -1,6 +1,7 @@
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 import pandas as pd
 import numpy as np
+
 def vif(x):
     df = x.copy()
     # vif 10 초과시 drop을 위한 임계값 설정
