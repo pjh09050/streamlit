@@ -4,7 +4,6 @@ pandas
 plotly.express
 streamlit_option_menu
 matplotlib
-vif
 seaborn
 streamlit.components.v1
 statsmodels.stats.outliers_influence
