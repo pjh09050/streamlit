@@ -2,11 +2,9 @@
 
 # Font family for all text in the app, except code blocks
 # Accepted values (serif | sans serif | monospace) 
-# Default: "sans serif"
-font = "monospace"
-primaryColor="#147112"
+primaryColor="#EFBB0F"
 backgroundColor="#FFFFFF"
-secondaryBackgroundColor="#D0F1CE"
+secondaryBackgroundColor="#EFEFE9"
 textColor="#262730"
 
 # Streamlit version: 1.20.0
