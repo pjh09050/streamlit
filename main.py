@@ -73,10 +73,10 @@ if df is not None:
     try:
         data = pd.read_csv(df)
     except:
-        data_url = "https://raw.githubusercontent.com/pjh09050/streamlit/main/final_df.csv"
+        data_url = "https://raw.githubusercontent.com/pjh09050/streamlit/dataset/train.csv"
         data = pd.read_csv(data_url)
 else:
-    data_url = "https://raw.githubusercontent.com/pjh09050/streamlit/main/final_df.csv"
+    data_url = "https://raw.githubusercontent.com/pjh09050/streamlit/dataset/train.csv"
     data = pd.read_csv(data_url)
 
 
