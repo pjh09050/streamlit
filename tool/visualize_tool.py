@@ -15,7 +15,7 @@ def twod_visualization(df):
     data = df.iloc[:, -1]
     targets = data.unique()
 
-    colors = ['rgb(255, 204, 0)', 'rgb(255, 100, 0)']  # Specify colors for each class
+    colors = ['rgb(255, 204, 0)', 'rgb(255, 100, 0)']
 
     for target, color in zip(targets, colors):
         indicesToKeep = (data == target)
@@ -34,10 +34,10 @@ def twod_visualization(df):
         width=600,
         height=600,
         showlegend=True,
-        legend=dict(font=dict(size=8)),
-        margin=dict(l=40, r=40, t=40, b=40)  # Add margin for better spacing
+        legend=dict(font=dict(size=15)),
+        margin=dict(l=40, r=40, t=40, b=40) 
     )
-    fig.update_traces(marker=dict(size=8))  # Adjust marker size
+    fig.update_traces(marker=dict(size=8))  
 
     st.plotly_chart(fig)
 
@@ -48,7 +48,7 @@ def threed_visualization(df):
     data = df.iloc[:, -1]
     targets = data.unique()
 
-    colors = ['rgb(255, 204, 0)', 'rgb(255, 100, 0)']  # 각 클래스에 대한 색상 지정
+    colors = ['rgb(255, 204, 0)', 'rgb(255, 100, 0)'] 
 
     for target, color in zip(targets, colors):
         indicesToKeep = (data == target)
@@ -62,16 +62,9 @@ def threed_visualization(df):
         ))
 
     fig.update_layout(
-        scene=dict(
-            xaxis=dict(title='Principal Component 1'),
-            yaxis=dict(title='Principal Component 2'),
-            zaxis=dict(title='Principal Component 3')
-        ),
-        title='3 component PCA',
-        width=800,
-        height=800,
-        showlegend=True,
-        legend=dict(font=dict(size=8)),
+    scene=dict(xaxis=dict(title='Principal Component 1'),yaxis=dict(title='Principal Component 2'),zaxis=dict(title='Principal Component 3')),
+    title='3 component PCA',width=800,height=800,showlegend=True,
+    legend=dict(font=dict(size=15),itemsizing='constant',traceorder='reversed',title='Legend',tracegroupgap=100)
     )
 
     st.plotly_chart(fig)
