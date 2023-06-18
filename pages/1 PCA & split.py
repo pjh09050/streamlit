@@ -15,7 +15,7 @@ from tool.visualize_tool import twod_visualization, threed_visualization
 import matplotlib.pyplot as plt
 ############################################################################
 with st.sidebar:
-    choose = option_menu("순서", ["데이터 확인", "변수 선택", "데이터 불균형 확인", "PCA 진행", "PCA 시각화", "데이터 셋 분할"], icons=['bookmark-heart','bookmark-heart','bookmark-heart','bookmark-heart','bookmark-heart','bookmark-heart'] ,menu_icon="bi bi-card-list",
+    choose = option_menu("순서", ["데이터 확인", "변수 선택", "데이터 불균형 확인", "PCA 진행", "PCA 시각화", "데이터 셋 분할"], icons=['1-square','2-square','3-square','4-square','5-square','6-square'] ,menu_icon="bi bi-card-list",
         styles={
         "container": {"padding": "5!important", "background-color": "#fafafa"},
         "icon": {"color": "black", "font-size": "20px"}, 
@@ -38,7 +38,7 @@ if data_check == True:
 st.markdown('----')
 
 st.subheader('PCA')
-if st.checkbox('PCA'):
+if st.checkbox('변수 선택'):
     try:
         st.markdown("\n'하나 이상의 독립변수와 종속변수 하나를 지정해주세요.")
         st.markdown("위의 보기를 확인하고 독립변수들의 번호를 x, 종속변수의 번호를 y에 선택해주세요.")
@@ -85,9 +85,9 @@ if st.checkbox('PCA'):
                                 smote = SMOTE(random_state=42)
                                 new_x_arr,new_y_arr = smote.fit_resample(x_arr,y_arr)
 
-                                st.markdown('기존 데이터 형태: ', x_arr.shape, y_arr.shape)
-                                st.markdown('SMOTE 적용 후 데이터 형태: ', new_x_arr.shape, new_y_arr.shape)
-                                st.markdown('SMOTE 적용 후 종속변수 데이터 분포: ', pd.Series(new_y_arr).value_counts())
+                                st.write('기존 데이터 형태: ', x_arr.shape, y_arr.shape)
+                                st.write('SMOTE 적용 후 데이터 형태: ', new_x_arr.shape, new_y_arr.shape)
+                                st.write('SMOTE 적용 후 종속변수 데이터 분포: ', pd.Series(new_y_arr).value_counts())
                                 
                                 x_df = pd.DataFrame(new_x_arr, columns=df.columns[:-1])
                                 y_df = pd.DataFrame(new_y_arr, columns=[df.columns[-1]])

@@ -151,7 +151,10 @@ if cl1 == False and cl2 == True:
             st.markdown('----')
             st.subheader('성능 확인')
             pred_check = st.checkbox('성능 확인')
-
+            data_trans = st.button('성능 비교를 위한 데이터 전송')
+            if data_trans == True:
+                st.write('Logistic 성능 데이터가 전송되었습니다.')
+                
             if pred_check == True:
                 classification_report_text = classification_report(y_test, y_pred)
                 dnn_confusion_matrix = (confusion_matrix(y_test, y_pred))
@@ -191,9 +194,7 @@ if cl1 == False and cl2 == True:
         
                 st.markdown("모델이 종료되었습니다.")
 
-                data_trans = st.button('성능 비교를 위한 데이터 전송')
-
                 if data_trans == True:
                     st.session_state['y_pred_Logistic'] = y_pred
                     st.session_state['y_test_Logistic'] = y_test
-                    st.write('Logistic 성능 데이터가 전송되었습니다.')
+                    

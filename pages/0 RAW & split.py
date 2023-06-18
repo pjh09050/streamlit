@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 
 ############################################################################
 with st.sidebar:
-    choose = option_menu("순서", ["데이터 확인", "변수 시각화", "데이터 셋 분할"], icons=['bookmark-heart','bookmark-heart','bookmark-heart'],menu_icon="bi bi-card-list",
+    choose = option_menu("순서", ["데이터 확인", "변수 시각화", "데이터 셋 분할"], icons=['1-square','2-square','3-square'],menu_icon="bi bi-card-list",
         styles={
         "container": {"padding": "5!important", "background-color": "#fafafa"},
         "icon": {"color": "black", "font-size": "20px"}, 

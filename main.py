@@ -33,7 +33,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 ############################################################################
-introduce = st.sidebar.checkbox('프로젝트 소개', value=False)
+introduce = st.sidebar.checkbox('프로젝트 소개', value=True)
 if introduce == True:
     st.title('주제')
     st.markdown('----')
@@ -81,7 +81,7 @@ else:
     df = pd.read_csv(data_url)
 
 with st.sidebar:
-    choose = option_menu("순서", ["1. 데이터 확인", "2. 변수 확인", "3. 결측치 확인", "4. error 변수 생성", "5. Total data 생성", '6. Type 변환'], icons=['bookmark-heart','bookmark-heart','bookmark-heart','bookmark-heart','bookmark-heart','bookmark-heart'],menu_icon="bi bi-card-list",
+    choose = option_menu("순서", ["데이터 확인", "변수 확인", "결측치 확인", "error 변수 생성", "Total data 생성", 'Type 변환'], icons=['1-square','2-square','3-square','4-square','5-square','6-square'],menu_icon="bi bi-card-list",
         styles={
         "container": {"padding": "5!important", "background-color": "#fafafa"},
         "icon": {"color": "black", "font-size": "20px"}, 
@@ -171,6 +171,12 @@ if introduce == False:
                     total_df = total_df.reset_index(drop=True)
                 except:
                     total_df = df1
+
+            # file_num = st.selectbox("파일 선택", total_df)
+            # try:
+            #     total_df = pd.read_csv('dataset/exp',file_num)
+            # except Exception as e:
+            #     st.write(e)
             st.write(total_df)
         except:
             st.write('error 변수를 만들어주세요')
@@ -186,6 +192,7 @@ if introduce == False:
                         total_df[col] = total_df[col].replace(val, i)
 
             st.write('변환이 완료되었습니다.')
+            st.write(total_df)
         except:
             total_df = total_df
             st.write('변환 가능한게 없습니다.')
