@@ -14,8 +14,35 @@ from imblearn.over_sampling import SMOTE
 from tool.visualize_tool import twod_visualization, threed_visualization
 import matplotlib.pyplot as plt
 ############################################################################
+st.set_page_config(
+    page_title="기말 프로젝트",
+    page_icon="heart",
+    layout="wide",
+)
+st.markdown(
+    """
+    <style>
+    .main {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    .sidebar.sidebar-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .sidebar .sidebar-content .element-container:last-child {
+        order: -1;
+        margin-top: auto;
+        margin-bottom: 10px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+############################################################################
 with st.sidebar:
-    choose = option_menu("순서", ["데이터 확인", "변수 선택", "데이터 불균형 확인", "PCA 진행", "PCA 시각화", "데이터 셋 분할"], icons=['1-square','2-square','3-square','4-square','5-square','6-square'] ,menu_icon="bi bi-card-list",
+    choose = option_menu("Option", ["데이터 확인", "변수 선택", "데이터 불균형 확인", "PCA 진행", "PCA 시각화", "데이터 셋 분할"], icons=['1-square','2-square','3-square','4-square','5-square','6-square'] ,menu_icon="bi bi-card-list",
         styles={
         "container": {"padding": "5!important", "background-color": "#fafafa"},
         "icon": {"color": "black", "font-size": "20px"}, 
@@ -28,7 +55,7 @@ with st.spinner('Updating Report...'):
     try:
         total_data = st.session_state['train_data']
     except:
-        st.write('데이터를 보내주세요')
+        st.write(':red[ 데이터를 보내주세요]')
         st.stop()
 
 data_check = st.checkbox('데이터 확인')
@@ -95,7 +122,7 @@ if st.checkbox('변수 선택'):
                     
                                 st.markdown("데이터 불균형이 해소 되었습니다. 주성분분석을 진행하세요.")
                             except:
-                                st.markdown('앞서 입력하신 번호가 중복되거나 범위 안에 있는지 다시 한 번 확인해주세요.')
+                                st.markdown(':red[ 앞서 입력하신 번호가 중복되거나 범위 안에 있는지 다시 한 번 확인해주세요.]')
                     break
                 else:
                     st.markdown('데이터 불균형이 존재하지 않습니다.')
@@ -157,8 +184,8 @@ if st.checkbox('변수 선택'):
 
                 st.write("주성분 설정이 끝났습니다. 학습용 데이터를 생성해주세요.")
 
-            except Exception as e:
-                st.write('입력하신 주성분 개수를 다시 한 번 확인해주세요')
+            except:
+                st.write(':red[ 입력하신 주성분 개수를 다시 한 번 확인해주세요]')
 
         st.markdown('----')
         if st.checkbox('PCA 시각화'):
@@ -168,13 +195,13 @@ if st.checkbox('변수 선택'):
                     twod_visualization(pca_df)
                     print("이제 'train_split()'을 통해 학습용 데이터를 생성해주세요.")
                 except:
-                    print('데이터의 차원이 달라 2차원 시각화가 불가능 합니다.')
+                    print(':red[ 데이터의 차원이 달라 2차원 시각화가 불가능 합니다.]')
             elif dimension=='3d':
                 try:
                     threed_visualization(pca_df)
                     print("이제 'train_split()'을 통해 학습용 데이터를 생성해주세요.")
                 except:
-                    print('데이터의 차원이 달라 3차원 시각화가 불가능 합니다.')
+                    print(':red[ 데이터의 차원이 달라 3차원 시각화가 불가능 합니다.]')
             else:
                 raise Exception('파라미터를 다시 확인해주세요')
         

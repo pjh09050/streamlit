@@ -5,10 +5,40 @@ import os
 device_lib.list_local_devices()
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 from sklearn.model_selection import train_test_split
-
+import plotly.express as px
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.graph_objects as go
+############################################################################
+st.set_page_config(
+    page_title="기말 프로젝트",
+    page_icon="heart",
+    layout="wide",
+)
+st.markdown(
+    """
+    <style>
+    .main {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    .sidebar.sidebar-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .sidebar .sidebar-content .element-container:last-child {
+        order: -1;
+        margin-top: auto;
+        margin-bottom: 10px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 ############################################################################
 with st.sidebar:
-    choose = option_menu("순서", ["데이터 확인", "변수 시각화", "데이터 셋 분할"], icons=['1-square','2-square','3-square'],menu_icon="bi bi-card-list",
+    choose = option_menu("Option", ["데이터 확인", "변수 시각화", "데이터 셋 분할"], icons=['1-square','2-square','3-square'],menu_icon="bi bi-card-list",
         styles={
         "container": {"padding": "5!important", "background-color": "#fafafa"},
         "icon": {"color": "black", "font-size": "20px"}, 
@@ -21,20 +51,40 @@ with st.spinner('Updating Report...'):
     try:
         total_data = st.session_state['train_data']
     except:
-        st.write('데이터를 보내주세요')
+        st.write(':red[ 데이터를 보내주세요]')
         st.stop()
-
+############################################################################
 if st.checkbox('데이터 확인'):
     st.write(total_data)
-
+############################################################################
 st.markdown('----')
 
 st.subheader('RAW 데이터 시각화')
+
+graph_list = ['선택', '그래프', '박스 플롯']
 try:
-    if st.checkbox('데이터 시각화'):
+    graph = st.selectbox('차트 선택', graph_list, index=0)
+    if graph == '그래프':
+        select_multi_species = st.selectbox('확인하고 싶은 변수 선택', total_data.columns)
+        if select_multi_species:
+            st.subheader(select_multi_species + ' 그래프')
+            select = total_data[select_multi_species]
+            fig = px.bar(select, x=select.index, y=select.values)
+            fig.update_layout(width=1300, height=400)
+            st.plotly_chart(fig)
+        else:
+            st.write('선택된 변수가 없습니다.')
+############################################################################
+    elif graph == '박스 플롯':
+        select_box = st.selectbox('확인하고 싶은 변수 선택', total_data.columns)
+        if select_box:
+            st.subheader(select_box + ' 박스 플롯')
+            fig = px.box(total_data, y=select_box, points="outliers", color='error')
+            st.plotly_chart(fig)
+        else:
+            st.write('선택된 변수가 없습니다.')
 
-        st.write('시각화')
-
+############################################################################
     st.markdown('----')
     st.subheader('데이터 셋 분할')
     if st.checkbox('데이터 셋 분할'):
