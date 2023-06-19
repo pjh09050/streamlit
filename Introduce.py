@@ -27,7 +27,7 @@ sidebar_style = """
 </style>
 """
 ############################################################################
-markdown_text = """ # 오픈채팅방
+markdown_text = """ # Connect
     https://open.kakao.com/me/MoZi_AI
 """
 st.sidebar.markdown('')
