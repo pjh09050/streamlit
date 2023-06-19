@@ -317,7 +317,7 @@ def import_SVM_predict_pca(x_train, x_test ,y_train ,y_test):
 
 ############################################################################
 with st.sidebar:
-    choose = option_menu("", ['Model','Logistic Regression', 'Random Forest', 'DNN', 'XGBOOST', 'SVM'], icons=['bar-chart', '1-square','2-square','3-square','4-square','5-square'], menu_icon="bi bi-card-list",
+    choose = option_menu("", ['Models','Logistic Regression', 'Random Forest', 'DNN', 'XGBOOST', 'SVM'], icons=['reception-3', 'battery-full','battery-full','battery-full','battery-full','battery-full'], menu_icon="bi bi-card-list",
         styles={
         "container": {"padding": "3!important", "background-color": "#fafafa"},
         "icon": {"color": "black", "font-size": "15px"}, 
@@ -468,7 +468,7 @@ if model_select == 'Logistic Regression':
                     st.markdown("모델이 종료되었습니다.")
 
 ############################################################################    
-elif model_select == 'Random Forest':
+if model_select == 'Random Forest':
     col1, col2 = st.columns([1,5])
     cl1 = col1.checkbox('RAW 데이터 사용')
     cl2 = col2.checkbox('PCA 데이터 사용')
@@ -601,7 +601,7 @@ elif model_select == 'Random Forest':
                 st.markdown("모델이 종료되었습니다.")
 
 ############################################################################         
-elif model_select == 'Deep Neural Network':
+if model_select == 'Deep Neural Network':
     col1, col2 = st.columns([1,5])
     cl1 = col1.checkbox('RAW 데이터 사용')
     cl2 = col2.checkbox('PCA 데이터 사용')
@@ -767,7 +767,7 @@ elif model_select == 'Deep Neural Network':
                     st.markdown("모델이 종료되었습니다.")
 
 ############################################################################   
-elif model_select == 'XGBOOST':
+if model_select == 'XGBOOST':
     col1, col2 = st.columns([1,5])
     cl1 = col1.checkbox('RAW 데이터 사용')
     cl2 = col2.checkbox('PCA 데이터 사용')

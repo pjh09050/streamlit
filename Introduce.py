@@ -27,7 +27,7 @@ sidebar_style = """
 </style>
 """
 ############################################################################
-markdown_text = """ # Connect
+markdown_text = """ ### Connect
     https://open.kakao.com/me/MoZi_AI
 """
 st.sidebar.markdown('')
@@ -202,10 +202,14 @@ if cl7 == True: # Confusion Matrix
 
         st.image(resized_image)
     with col11:
-        st.write("아 이거 겁나 헷갈리네특이도는 실제 음성 중 모델이 정확하게 음성으로 예측한 것의 비율을 나타낸다.")
-        st.write("민감도는")
+        st.write('')
+        st.write('')
+        st.write('')
+        st.write("'Perfect classifier'를 뜻하는 파란색 점에 가까울수록 성능이 좋은 모델이다.") # 양품0 불량품1
+        st.write("특이도는 실제 불량품 중 모델이 정확하게 불량품으로 예측한 것의 비율을 나타낸다.")
+        st.write("민감도는 실제 양품 중 모델이 정확하게 양품으로 예측한 것의 비율을 나타낸다.")
         st.write("X축은 '1 - 특이도'를 의미하고 Y축은 '민감도'를 의미한다.")
-        
-
+        st.write("여러 모델을 비교할 때 사용하는 AUC는 ROC 곡선 아래의 면적을 의미한다.")
+    
 # 회사 소개
 

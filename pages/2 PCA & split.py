@@ -42,7 +42,7 @@ st.markdown(
 )
 ############################################################################
 with st.sidebar:
-    choose = option_menu("", ["차례","데이터 확인", "변수 선택", "데이터 불균형 확인", "PCA 진행", "PCA 시각화", "데이터 셋 분할"], icons=['bar-chart','1-square','2-square','3-square','4-square','5-square','6-square'] ,menu_icon="bi bi-card-list",
+    choose = option_menu("", ["Contents","데이터 확인", "변수 선택", "데이터 불균형 확인", "PCA 진행", "PCA 시각화", "데이터 셋 분할"], icons=['reception-2','battery', 'battery-half','battery-half','battery-half','battery-half','battery-full'] ,menu_icon="bi bi-card-list",
         styles={
         "container": {"padding": "3!important", "background-color": "#fafafa"},
         "icon": {"color": "black", "font-size": "15px"}, 
@@ -91,6 +91,12 @@ if st.checkbox('변수 선택'):
                 df = pd.concat([df, total_data[feature_y_columns_unique]], axis=1)
                 st.write(df)
 
+        scaler = StandardScaler()
+        scaler.fit(df)
+        scaled_arr = scaler.transform(df)
+        scaled_df = pd.DataFrame(scaled_arr, columns = df.columns)
+        scaled_df['error']=df['error']
+
         st.markdown('----')
 
         if st.checkbox('데이터 불균형 확인'):
@@ -100,34 +106,40 @@ if st.checkbox('변수 선택'):
 
             for val in range(len(y_count)):
                 if round(y_count[val]/len(y_data),2) != round(1/len(y_count),2):
-                    T = True
                     st.markdown("데이터 불균형이 존재합니다. SMOTE를 통해 데이터 불균형을 해소하세요")
                     st.markdown('SMOTE는 최근접 이웃(k-NN) 알고리즘을 기반으로 하여 데이터를 새로 생성해 종속변수 데이터가 같은 비율을 갖게 하는 알고리즘 입니다.')
                     st.markdown('----')
-                    if T == True:
-                        if st.checkbox('SMOTE 진행'):
-                            try:
-                                x_arr = df.iloc[:,:-1].values
-                                y_arr = df.iloc[:,-1].values
-                                smote = SMOTE(random_state=42)
-                                new_x_arr,new_y_arr = smote.fit_resample(x_arr,y_arr)
+                    if st.checkbox('SMOTE 진행') == True:
+                        try:
+                            x_arr = scaled_df.iloc[:,:-1].values
+                            y_arr = scaled_df.iloc[:,-1].values
+                            smote = SMOTE(random_state=42)
+                            new_x_arr,new_y_arr = smote.fit_resample(x_arr,y_arr)
 
-                                st.write('기존 데이터 형태: ', x_arr.shape, y_arr.shape)
-                                st.write('SMOTE 적용 후 데이터 형태: ', new_x_arr.shape, new_y_arr.shape)
-                                st.write('SMOTE 적용 후 종속변수 데이터 분포: ', pd.Series(new_y_arr).value_counts())
-                                
-                                x_df = pd.DataFrame(new_x_arr, columns=df.columns[:-1])
-                                y_df = pd.DataFrame(new_y_arr, columns=[df.columns[-1]])
-                                df = pd.concat([x_df,y_df], axis=1)
-                    
-                                st.markdown("데이터 불균형이 해소 되었습니다. 주성분분석을 진행하세요.")
-                            except:
-                                st.markdown(':red[ 앞서 입력하신 번호가 중복되거나 범위 안에 있는지 다시 한 번 확인해주세요.]')
+                            st.write('기존 데이터 형태: ', x_arr.shape, y_arr.shape)
+                            st.write('SMOTE 적용 후 데이터 형태: ', new_x_arr.shape, new_y_arr.shape)
+                            st.write('SMOTE 적용 후 종속변수 데이터 분포: ', pd.Series(new_y_arr).value_counts())
+                            
+                            x_df = pd.DataFrame(new_x_arr, columns=scaled_df.columns[:-1])
+                            y_df = pd.DataFrame(new_y_arr, columns=[scaled_df.columns[-1]])
+                            df = pd.concat([x_df,y_df], axis=1)
+                
+                            st.markdown("데이터 불균형이 해소 되었습니다. 주성분분석을 진행하세요.")
+                            st.write(df)
+                        except:
+                            st.markdown(':red[ 앞서 입력하신 번호가 중복되거나 범위 안에 있는지 다시 한 번 확인해주세요.]')
+                    elif st.checkbox('SMOTE skip'):
+                        df = scaled_df
+                        x_arr = df.iloc[:,:-1].values
+                        y_arr = df.iloc[:,-1].values
+
+                        st.write('기존 데이터 형태: ', x_arr.shape, y_arr.shape)
+                        st.write(df)
                     break
                 else:
                     st.markdown('데이터 불균형이 존재하지 않습니다.')
                     st.markdown('.pca()를 통해 주성분분석을 진행하세요.')
-
+            
         st.markdown('----')
         if st.checkbox('PCA 진행'):
             try:
@@ -159,7 +171,7 @@ if st.checkbox('변수 선택'):
                 df_for_explain.columns = [f'PC{i + 1}' for i in idx]
 
                 for col in range(len(df_for_explain.columns)):
-                    if df_for_explain.iloc[2, col] > 0.8:
+                    if df_for_explain.iloc[2, col] > 0.9:
                         num_PC = col + 1
                         break
 

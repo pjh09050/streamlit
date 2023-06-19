@@ -36,7 +36,15 @@ st.markdown(
 )
 ############################################################################
 with st.sidebar:
-    choose = option_menu("",  ['Model','Logistic Regression', 'Random Forest', 'DNN', 'XGBOOST', 'SVM'], icons=['bar-chart', '1-square','2-square','3-square','4-square','5-square'], menu_icon="bi bi-card-list",
+    choose = option_menu("",  ['Models','Logistic Regression', 'Random Forest', 'DNN', 'XGBOOST', 'SVM'], icons=['reception-4', 'battery-full','battery-full','battery-full','battery-full','battery-full'], menu_icon="bi bi-card-list",
+        styles={
+        "container": {"padding": "3!important", "background-color": "#fafafa"},
+        "icon": {"color": "black", "font-size": "15px"}, 
+        "nav-link": {"font-size": "15px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+        "nav-link-selected": {"font-size": "20px","background-color": "#D8D4C7"},
+    }
+    )
+    choose1 = option_menu("",  ['Performance','Accuracy', 'Precision', 'Recall', 'F1-Score'], icons=['reception-4', 'battery-full','battery-full','battery-full','battery-full'], menu_icon="bi bi-card-list",
         styles={
         "container": {"padding": "3!important", "background-color": "#fafafa"},
         "icon": {"color": "black", "font-size": "15px"}, 

@@ -35,7 +35,7 @@ st.markdown(
 )
 ############################################################################
 with st.sidebar:
-    choose = option_menu("", ["차례","데이터 확인", "변수 시각화", "데이터 셋 분할"], icons=['bar-chart','1-square','2-square','3-square'],menu_icon="bi bi-card-list",
+    choose = option_menu("", ["Contents","데이터 확인", "변수 시각화", "데이터 셋 분할"], icons=['reception-1','battery', 'battery-half','battery-full'],menu_icon="bi bi-card-list",
         styles={
         "container": {"padding": "3!important", "background-color": "#fafafa"},
         "icon": {"color": "black", "font-size": "15px"}, 
