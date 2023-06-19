@@ -4,8 +4,8 @@ from streamlit_option_menu import option_menu
 from tensorflow.python.client import device_lib
 import os
 import pandas as pd
-device_lib.list_local_devices()
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+#device_lib.list_local_devices()
+#os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 from sklearn import metrics
 ############################################################################
 st.set_page_config(

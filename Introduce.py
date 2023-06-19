@@ -1,10 +1,5 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
 from  PIL import Image
-import numpy as np
-import pandas as pd
-import plotly.express as px
-from streamlit.components.v1 import html
 
 # 페이지 너비 조정 
 st.set_page_config(

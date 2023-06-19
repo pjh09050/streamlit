@@ -2,8 +2,8 @@ import streamlit as st
 from tensorflow.python.client import device_lib
 from streamlit_option_menu import option_menu
 import os
-device_lib.list_local_devices()
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+#device_lib.list_local_devices()
+#os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler

@@ -3,13 +3,12 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from tensorflow.python.client import device_lib
 import os
-device_lib.list_local_devices()
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+#device_lib.list_local_devices()
+#os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import plotly.express as px
 from sklearn import metrics
 from tool.model.DL_model import dnn
 from tensorflow.keras.callbacks import EarlyStopping
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report, roc_curve, auc
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -947,8 +946,8 @@ if model_select == 'support vector machine':
                 st.markdown('----')
                 st.subheader('성능 확인')
                 pred_check = st.checkbox('성능 확인')
-                data_trans_lr_raw = st.button('성능 비교를 위한 데이터 전송')                       
-                if data_trans_lr_raw == True:
+                data_trans_SVM_raw = st.button('성능 비교를 위한 데이터 전송')                       
+                if data_trans_SVM_raw == True:
                     st.write('SVM 성능 데이터가 전송되었습니다.')
 
                 if pred_check == True:
@@ -988,7 +987,7 @@ if model_select == 'support vector machine':
                         st.write('')
                         st.write('AUC: ', auc(fpr, tpr))
 
-                    if data_trans_lr_raw == True:
+                    if data_trans_SVM_raw == True:
                         st.session_state['y_pred_SVM_raw'] = y_pred
                         st.session_state['y_test_SVM_raw'] = y_test  
 
@@ -1014,8 +1013,8 @@ if model_select == 'support vector machine':
                 st.markdown('----')
                 st.subheader('성능 확인')
                 pred_check = st.checkbox('성능 확인')
-                data_trans_lr_pca = st.button('성능 비교를 위한 데이터 전송')
-                if data_trans_lr_pca == True:
+                data_trans_SVM_pca = st.button('성능 비교를 위한 데이터 전송')
+                if data_trans_SVM_pca == True:
                     st.write('SVM 성능 데이터가 전송되었습니다.')
                     
                 if pred_check == True:
@@ -1055,7 +1054,7 @@ if model_select == 'support vector machine':
                         st.write('')
                         st.write('AUC: ', auc(fpr, tpr))
 
-                    if data_trans_lr_pca == True:
+                    if data_trans_SVM_pca == True:
                         st.session_state['y_pred_SVM_PCA'] = y_pred
                         st.session_state['y_test_SVM_PCA'] = y_test                
                     st.markdown("모델이 종료되었습니다.")
