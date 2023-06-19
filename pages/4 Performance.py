@@ -36,17 +36,17 @@ st.markdown(
 )
 ############################################################################
 with st.sidebar:
-    choose = option_menu("Model", ['Logistic Regression', 'Random Forest', 'Deep Neural Network'], icons=['1-square','2-square','3-square'], menu_icon="bi bi-card-list",
+    choose = option_menu("",  ['Model','Logistic Regression', 'Random Forest', 'DNN', 'XGBOOST', 'SVM'], icons=['bar-chart', '1-square','2-square','3-square','4-square','5-square'], menu_icon="bi bi-card-list",
         styles={
-        "container": {"padding": "5!important", "background-color": "#fafafa"},
-        "icon": {"color": "black", "font-size": "18px"}, 
-        "nav-link": {"font-size": "17px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
-        "nav-link-selected": {"background-color": "#D8D4C7"},
+        "container": {"padding": "3!important", "background-color": "#fafafa"},
+        "icon": {"color": "black", "font-size": "15px"}, 
+        "nav-link": {"font-size": "15px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+        "nav-link-selected": {"font-size": "20px","background-color": "#D8D4C7"},
     }
     )
 ############################################################################
 st.subheader('Performance')
-model_list = ['Logistic Regression_raw','Logistic Regression_PCA', 'Random Forest_raw','Random Forest_PCA', 'DNN_raw', 'DNN_PCA', 'XGB_raw' ,'XGB_PCA']
+model_list = ['Logistic Regression_raw','Logistic Regression_PCA', 'Random Forest_raw','Random Forest_PCA', 'DNN_raw', 'DNN_PCA', 'XGB_raw' ,'XGB_PCA', 'SVM_raw', 'SVM_PCA']
 performance_select = st.multiselect('모델 선택', model_list)
 selected_models = []
 ############################################################################
@@ -179,6 +179,38 @@ if 'XGB_PCA' in performance_select:
     data_XGB_pca = {'Accuracy' : [round(accuracy_XGB_pca, 4)],'Precision' : [round(precision_XGB_pca, 4)],'Recall' : [round(recall_XGB_pca, 4)],'F1-score' : [round(f1_XGB_pca, 4)],}
     df_XGB_pca = pd.DataFrame(data_XGB_pca, index=model_list[7:8])
     selected_models.append(df_XGB_pca)
+
+############################################################################
+if 'SVM_raw' in performance_select:
+    with st.spinner('Updating Report...'):
+        try:
+            y_pred_SVM_raw = st.session_state['y_pred_SVM_raw']
+            y_test_SVM_raw = st.session_state['y_test_SVM_raw']
+        except:
+            st.write(':red[ SVM_raw 성능 데이터를 보내주세요]')
+            st.stop()
+    accuracy_SVM_raw = metrics.accuracy_score(y_test_SVM_raw, y_pred_SVM_raw)
+    precision_SVM_raw = metrics.precision_score(y_test_SVM_raw, y_pred_SVM_raw)
+    recall_SVM_raw = metrics.recall_score(y_test_SVM_raw, y_pred_SVM_raw)
+    f1_SVM_raw = metrics.f1_score(y_test_SVM_raw, y_pred_SVM_raw)
+    data_SVM_raw = {'Accuracy' : [round(accuracy_SVM_raw, 4)],'Precision' : [round(precision_SVM_raw, 4)],'Recall' : [round(recall_SVM_raw, 4)],'F1-score' : [round(f1_SVM_raw, 4)],}
+    df_SVM_raw = pd.DataFrame(data_SVM_raw, index=model_list[8:9])
+    selected_models.append(df_SVM_raw)
+
+if 'SVM_PCA' in performance_select:
+    with st.spinner('Updating Report...'):
+        try:
+            y_pred_SVM_pca = st.session_state['y_pred_SVM_PCA']
+            y_test_SVM_pca = st.session_state['y_test_SVM_PCA']
+        except:
+            st.write(':red[ SVM_pca 성능 데이터를 보내주세요]')
+    accuracy_SVM_pca = metrics.accuracy_score(y_test_SVM_pca, y_pred_SVM_pca)
+    precision_SVM_pca = metrics.precision_score(y_test_SVM_pca, y_pred_SVM_pca)
+    recall_SVM_pca = metrics.recall_score(y_test_SVM_pca, y_pred_SVM_pca)
+    f1_SVM_pca = metrics.f1_score(y_test_SVM_pca, y_pred_SVM_pca)
+    data_SVM_pca = {'Accuracy' : [round(accuracy_SVM_pca, 4)],'Precision' : [round(precision_SVM_pca, 4)],'Recall' : [round(recall_SVM_pca, 4)],'F1-score' : [round(f1_SVM_pca, 4)],}
+    df_SVM_pca = pd.DataFrame(data_SVM_pca, index=model_list[9:10])
+    selected_models.append(df_SVM_pca)
 
 ############################################################################
 if selected_models:

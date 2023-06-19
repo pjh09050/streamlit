@@ -38,12 +38,12 @@ st.markdown(
 )
 ############################################################################
 with st.sidebar:
-    choose = option_menu("Option", ["데이터 확인", "변수 시각화", "데이터 셋 분할"], icons=['1-square','2-square','3-square'],menu_icon="bi bi-card-list",
+    choose = option_menu("", ["차례","데이터 확인", "변수 시각화", "데이터 셋 분할"], icons=['bar-chart','1-square','2-square','3-square'],menu_icon="bi bi-card-list",
         styles={
-        "container": {"padding": "5!important", "background-color": "#fafafa"},
-        "icon": {"color": "black", "font-size": "20px"}, 
-        "nav-link": {"font-size": "20px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
-        "nav-link-selected": {"background-color": "#D8D4C7"},
+        "container": {"padding": "3!important", "background-color": "#fafafa"},
+        "icon": {"color": "black", "font-size": "15px"}, 
+        "nav-link": {"font-size": "15px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+        "nav-link-selected": {"font-size": "20px", "background-color": "#D8D4C7"},
     }
     )
 ############################################################################

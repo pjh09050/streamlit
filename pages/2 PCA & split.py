@@ -42,12 +42,12 @@ st.markdown(
 )
 ############################################################################
 with st.sidebar:
-    choose = option_menu("Option", ["데이터 확인", "변수 선택", "데이터 불균형 확인", "PCA 진행", "PCA 시각화", "데이터 셋 분할"], icons=['1-square','2-square','3-square','4-square','5-square','6-square'] ,menu_icon="bi bi-card-list",
+    choose = option_menu("", ["차례","데이터 확인", "변수 선택", "데이터 불균형 확인", "PCA 진행", "PCA 시각화", "데이터 셋 분할"], icons=['bar-chart','1-square','2-square','3-square','4-square','5-square','6-square'] ,menu_icon="bi bi-card-list",
         styles={
-        "container": {"padding": "5!important", "background-color": "#fafafa"},
-        "icon": {"color": "black", "font-size": "20px"}, 
-        "nav-link": {"font-size": "20px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
-        "nav-link-selected": {"background-color": "#D8D4C7"},
+        "container": {"padding": "3!important", "background-color": "#fafafa"},
+        "icon": {"color": "black", "font-size": "15px"}, 
+        "nav-link": {"font-size": "15px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+        "nav-link-selected": {"font-size": "20px", "background-color": "#D8D4C7"},
     }
     )
 ############################################################################
@@ -217,8 +217,6 @@ if st.checkbox('변수 선택'):
                 y_data = pca_df.iloc[:,-1].to_numpy()
                 
                 x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=ratio2, random_state=1)
-                #x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=ratio2, random_state=1)
-                #x_train, x_val, x_test, y_train, y_val, y_test = custom_train_test_split(x_data, y_data, ratio1, ratio2, ratio3)
                 st.write('train 데이터 수 :', len(x_train))
                 st.write('test 데이터 수 :', len(x_test))
                 
