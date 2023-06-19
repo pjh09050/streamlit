@@ -262,42 +262,58 @@ def import_XGB_predict_pca(x_train, x_val, x_test ,y_train ,y_val ,y_test):
 ############################################################################
 @st.cache_resource(ttl=24*60*60)
 def import_SVM_predict_raw(x_train, x_test ,y_train ,y_test):
+    progress_bar_fit = st.progress(0)
+    progress_text_fit = st.empty()
     SVM = svm.SVC(kernel='rbf', C=3, gamma=0.25, probability=True)
     SVM.fit(x_train, y_train)
-    y_pred = SVM.predict(x_test)
-    y_pred_proba = SVM.predict_proba(x_test)[:,1]
-    y_pred = y_pred.reshape(-1)
 
-    for y in range(len(y_pred)):
-        if y_pred[y] >= 0.5:
-            y_pred[y] = 1
-        else:
-            y_pred[y] = 0 
+    for epoch in range(100):
+        y_pred = SVM.predict(x_test)
+        y_pred_proba = SVM.predict_proba(x_test)[:,1]
+        y_pred = y_pred.reshape(-1)
+        
+        for y in range(len(y_pred)):
+            if y_pred[y] >= 0.5:
+                y_pred[y] = 1
+            else:
+                y_pred[y] = 0 
 
-    y_pred = y_pred.astype(int)
-    y_pred = y_pred.reshape(-1,1)
-    y_test = y_test.reshape(-1,1)
+        y_pred = y_pred.astype(int)
+        y_pred = y_pred.reshape(-1,1)
+        y_test = y_test.reshape(-1,1)
+        progress_fit = (epoch + 1) / 100
+        progress_bar_fit.progress(progress_fit)
+        progress_text_fit.text(f"Progress: {int(progress_fit * 100)}%")
 
+    progress_bar_fit.empty()
     return y_pred, y_test, y_pred_proba
 
 @st.cache_resource(ttl=24*60*60)
 def import_SVM_predict_pca(x_train, x_test ,y_train ,y_test):
+    progress_bar_fit = st.progress(0)
+    progress_text_fit = st.empty()
     SVM = svm.SVC(kernel='rbf', C=3, gamma=0.25, probability=True)
     SVM.fit(x_train, y_train)
-    y_pred = SVM.predict(x_test)
-    y_pred_proba = SVM.predict_proba(x_test)[:,1]
-    y_pred = y_pred.reshape(-1)
 
-    for y in range(len(y_pred)):
-        if y_pred[y] >= 0.5:
-            y_pred[y] = 1
-        else:
-            y_pred[y] = 0 
+    for epoch in range(100):
+        y_pred = SVM.predict(x_test)
+        y_pred_proba = SVM.predict_proba(x_test)[:,1]
+        y_pred = y_pred.reshape(-1)
+        
+        for y in range(len(y_pred)):
+            if y_pred[y] >= 0.5:
+                y_pred[y] = 1
+            else:
+                y_pred[y] = 0 
 
-    y_pred = y_pred.astype(int)
-    y_pred = y_pred.reshape(-1,1)
-    y_test = y_test.reshape(-1,1)
+        y_pred = y_pred.astype(int)
+        y_pred = y_pred.reshape(-1,1)
+        y_test = y_test.reshape(-1,1)
+        progress_fit = (epoch + 1) / 100
+        progress_bar_fit.progress(progress_fit)
+        progress_text_fit.text(f"Progress: {int(progress_fit * 100)}%")
 
+    progress_bar_fit.empty()
     return y_pred, y_test, y_pred_proba
 
 ############################################################################
