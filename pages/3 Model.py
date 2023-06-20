@@ -734,7 +734,7 @@ if model_select == 'Deep Neural Network':
 
                     col1, col2, col3 = st.columns([3,1,3])
                     with col1:
-                        st.code(classification_report_text)
+                        st.code('     ',classification_report_text)
                     with col2:
                         st.write('Confusion Matrix:', dnn_confusion_matrix)
                     with col3:

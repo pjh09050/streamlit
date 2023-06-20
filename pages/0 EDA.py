@@ -149,7 +149,7 @@ if st.checkbox('데이터 불러오기'):
                         total_df[col] = total_df[col].replace(val, i)
 
             st.write('변환이 완료되었습니다.')
-            st.write(total_df)
+            #st.write(total_df)
         except:
             total_df = total_df
             st.write('변환 가능한게 없습니다.')
