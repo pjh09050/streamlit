@@ -7,6 +7,7 @@ import pandas as pd
 #device_lib.list_local_devices()
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 from sklearn import metrics
+from sklearn.decomposition import PCA
 ############################################################################
 st.set_page_config(
     page_title="기말 프로젝트",
@@ -54,175 +55,501 @@ with st.sidebar:
     )
 ############################################################################
 st.subheader('Performance')
-model_list = ['Logistic Regression_raw','Logistic Regression_PCA', 'Random Forest_raw','Random Forest_PCA', 'DNN_raw', 'DNN_PCA', 'XGB_raw' ,'XGB_PCA', 'SVM_raw', 'SVM_PCA']
-performance_select = st.multiselect('모델 선택', model_list)
+model_list = ['로지스틱 회귀_raw','로지스틱 회귀_PCA', '서포트벡터머신_raw','서포트벡터머신_PCA', '랜덤 포레스트_raw', '랜덤 포레스트_PCA', 'XGBOOST_raw' ,'XGBOOST_PCA', 'Deep Neural Network_raw', 'Deep Neural Network_PCA']
+performance_select = st.multiselect('성능 확인을 위한 모델 선택', model_list)
 selected_models = []
 ############################################################################
-if 'Logistic Regression_raw' in performance_select:
+if '로지스틱 회귀_raw' in performance_select:
     with st.spinner('Updating Report...'):
         try:
-            y_pred_Logistic_raw = st.session_state['y_pred_Logistic_raw']
-            y_test_Logistic_raw = st.session_state['y_test_Logistic_raw']
+            LR_raw_metric = st.session_state['LR_raw_metric']
         except:
             st.write(':red[ Logistic_raw 성능 데이터를 보내주세요]')
             st.stop()
-    accuracy_Logistic_raw = metrics.accuracy_score(y_test_Logistic_raw, y_pred_Logistic_raw)
-    precision_Logistic_raw = metrics.precision_score(y_test_Logistic_raw, y_pred_Logistic_raw)
-    recall_Logistic_raw = metrics.recall_score(y_test_Logistic_raw, y_pred_Logistic_raw)
-    f1_Logistic_raw = metrics.f1_score(y_test_Logistic_raw, y_pred_Logistic_raw)
-    data_Logistic_raw = {'Accuracy' : [round(accuracy_Logistic_raw, 4)],'Precision' : [round(precision_Logistic_raw, 4)],'Recall' : [round(recall_Logistic_raw, 4)],'F1-score' : [round(f1_Logistic_raw, 4)],}
-    df_Logistic_raw = pd.DataFrame(data_Logistic_raw, index=model_list[:1])
-    selected_models.append(df_Logistic_raw)
+            
+    df_LR_raw = pd.DataFrame(LR_raw_metric, index = ['정확도','정밀도','재현율','F1 점수', 'AUC'])
+    selected_models.append(df_LR_raw)
 
-if 'Logistic Regression_PCA' in performance_select:
+if '로지스틱 회귀_PCA' in performance_select:
     with st.spinner('Updating Report...'):
         try:
-            y_pred_Logistic_pca = st.session_state['y_pred_Logistic_PCA']
-            y_test_Logistic_pca = st.session_state['y_test_Logistic_PCA']
+            LR_pca_metric = st.session_state['LR_pca_metric']
         except:
             st.write(':red[ Logistic_pca 성능 데이터를 보내주세요]')
-    accuracy_Logistic_pca = metrics.accuracy_score(y_test_Logistic_pca, y_pred_Logistic_pca)
-    precision_Logistic_pca = metrics.precision_score(y_test_Logistic_pca, y_pred_Logistic_pca)
-    recall_Logistic_pca = metrics.recall_score(y_test_Logistic_pca, y_pred_Logistic_pca)
-    f1_Logistic_pca = metrics.f1_score(y_test_Logistic_pca, y_pred_Logistic_pca)
-    data_Logistic_pca = {'Accuracy' : [round(accuracy_Logistic_pca, 4)],'Precision' : [round(precision_Logistic_pca, 4)],'Recall' : [round(recall_Logistic_pca, 4)],'F1-score' : [round(f1_Logistic_pca, 4)],}
-    df_Logistic_pca = pd.DataFrame(data_Logistic_pca, index=model_list[1:2])
-    selected_models.append(df_Logistic_pca)
-
+            st.stop()
+            
+    df_LR_pca = pd.DataFrame(LR_pca_metric, index = ['정확도','정밀도','재현율','F1 점수', 'AUC'])
+    selected_models.append(df_LR_pca)
+    
 ############################################################################
-if 'Random Forest_raw' in performance_select:
+if '서포트벡터머신_raw' in performance_select:
     with st.spinner('Updating Report...'):
         try:
-            y_pred_randomforest_raw = st.session_state['y_pred_randomforest_raw']
-            y_test_randomforest_raw = st.session_state['y_test_randomforest_raw']
-        except:
-            st.write(':red[ randomforest_raw 성능 데이터를 보내주세요]')
-            st.stop()
-    accuracy_randomforest_raw = metrics.accuracy_score(y_test_randomforest_raw, y_pred_randomforest_raw)
-    precision_randomforest_raw = metrics.precision_score(y_test_randomforest_raw, y_pred_randomforest_raw)
-    recall_randomforest_raw = metrics.recall_score(y_test_randomforest_raw, y_pred_randomforest_raw)
-    f1_randomforest_raw = metrics.f1_score(y_test_randomforest_raw, y_pred_randomforest_raw)
-    data_randomforest_raw = {'Accuracy' : [round(accuracy_randomforest_raw, 4)],'Precision' : [round(precision_randomforest_raw, 4)],'Recall' : [round(recall_randomforest_raw, 4)],'F1-score' : [round(f1_randomforest_raw, 4)],}
-    df_randomforest_raw = pd.DataFrame(data_randomforest_raw, index=model_list[2:3])
-    selected_models.append(df_randomforest_raw)
-
-if 'Random Forest_PCA' in performance_select:
-    with st.spinner('Updating Report...'):
-        try:
-            y_pred_randomforest_pca = st.session_state['y_pred_randomforest_PCA']
-            y_test_randomforest_pca = st.session_state['y_test_randomforest_PCA']
-        except:
-            st.write(':red[ randomforest_pca 성능 데이터를 보내주세요]')
-            st.stop()
-    accuracy_randomforest_pca = metrics.accuracy_score(y_test_randomforest_pca, y_pred_randomforest_pca)
-    precision_randomforest_pca = metrics.precision_score(y_test_randomforest_pca, y_pred_randomforest_pca)
-    recall_randomforest_pca = metrics.recall_score(y_test_randomforest_pca, y_pred_randomforest_pca)
-    f1_randomforest_pca = metrics.f1_score(y_test_randomforest_pca, y_pred_randomforest_pca)
-    data_randomforest_pca = {'Accuracy' : [round(accuracy_randomforest_pca, 4)],'Precision' : [round(precision_randomforest_pca, 4)],'Recall' : [round(recall_randomforest_pca, 4)],'F1-score' : [round(f1_randomforest_pca, 4)],}
-    df_randomforest_pca = pd.DataFrame(data_randomforest_pca, index=model_list[3:4])
-    selected_models.append(df_randomforest_pca)
-
-############################################################################
-if 'DNN_raw' in performance_select:
-    with st.spinner('Updating Report...'):
-        try:
-            y_pred_dnn_raw = st.session_state['y_pred_dnn_raw']
-            y_test_dnn_raw = st.session_state['y_test_dnn_raw']
-        except:
-            st.write(':red[ DNN_raw 성능 데이터를 보내주세요]')
-            st.stop()
-    accuracy_dnn_raw = metrics.accuracy_score(y_test_dnn_raw, y_pred_dnn_raw)
-    precision_dnn_raw = metrics.precision_score(y_test_dnn_raw, y_pred_dnn_raw)
-    recall_dnn_raw = metrics.recall_score(y_test_dnn_raw, y_pred_dnn_raw)
-    f1_dnn_raw = metrics.f1_score(y_test_dnn_raw, y_pred_dnn_raw)
-    data_DNN_raw = {'Accuracy' : [round(accuracy_dnn_raw, 4)],'Precision' : [round(precision_dnn_raw, 4)],'Recall' : [round(recall_dnn_raw, 4)],'F1-score' : [round(f1_dnn_raw, 4)],}
-    df_dnn_raw = pd.DataFrame(data_DNN_raw, index=model_list[4:5])
-    selected_models.append(df_dnn_raw)
-
-if 'DNN_PCA' in performance_select:
-    with st.spinner('Updating Report...'):
-        try:
-            y_pred_dnn_pca = st.session_state['y_pred_dnn_PCA']
-            y_test_dnn_pca = st.session_state['y_test_dnn_PCA']
-        except:
-            st.write(':red[ DNN_pca 성능 데이터를 보내주세요]')
-            st.stop()
-    accuracy_dnn_pca = metrics.accuracy_score(y_test_dnn_pca, y_pred_dnn_pca)
-    precision_dnn_pca = metrics.precision_score(y_test_dnn_pca, y_pred_dnn_pca)
-    recall_dnn_pca = metrics.recall_score(y_test_dnn_pca, y_pred_dnn_pca)
-    f1_dnn_pca = metrics.f1_score(y_test_dnn_pca, y_pred_dnn_pca)
-    data_DNN_pca = {'Accuracy' : [round(accuracy_dnn_pca, 4)],'Precision' : [round(precision_dnn_pca, 4)],'Recall' : [round(recall_dnn_pca, 4)],'F1-score' : [round(f1_dnn_pca, 4)],}
-    df_dnn_pca = pd.DataFrame(data_DNN_pca, index=model_list[5:6])
-    selected_models.append(df_dnn_pca)
-
-############################################################################
-if 'XGB_raw' in performance_select:
-    with st.spinner('Updating Report...'):
-        try:
-            y_pred_XGB_raw = st.session_state['y_pred_XGB_raw']
-            y_test_XGB_raw = st.session_state['y_test_XGB_raw']
-        except:
-            st.write(':red[ XGB_raw 성능 데이터를 보내주세요]')
-            st.stop()
-    accuracy_XGB_raw = metrics.accuracy_score(y_test_XGB_raw, y_pred_XGB_raw)
-    precision_XGB_raw = metrics.precision_score(y_test_XGB_raw, y_pred_XGB_raw)
-    recall_XGB_raw = metrics.recall_score(y_test_XGB_raw, y_pred_XGB_raw)
-    f1_XGB_raw = metrics.f1_score(y_test_XGB_raw, y_pred_XGB_raw)
-    data_XGB_raw = {'Accuracy' : [round(accuracy_XGB_raw, 4)],'Precision' : [round(precision_XGB_raw, 4)],'Recall' : [round(recall_XGB_raw, 4)],'F1-score' : [round(f1_XGB_raw, 4)],}
-    df_XGB_raw = pd.DataFrame(data_XGB_raw, index=model_list[6:7])
-    selected_models.append(df_XGB_raw)
-
-if 'XGB_PCA' in performance_select:
-    with st.spinner('Updating Report...'):
-        try:
-            y_pred_XGB_pca = st.session_state['y_pred_XGB_PCA']
-            y_test_XGB_pca = st.session_state['y_test_XGB_PCA']
-        except:
-            st.write(':red[ XGB_pca 성능 데이터를 보내주세요]')
-            st.stop()
-    accuracy_XGB_pca = metrics.accuracy_score(y_test_XGB_pca, y_pred_XGB_pca)
-    precision_XGB_pca = metrics.precision_score(y_test_XGB_pca, y_pred_XGB_pca)
-    recall_XGB_pca = metrics.recall_score(y_test_XGB_pca, y_pred_XGB_pca)
-    f1_XGB_pca = metrics.f1_score(y_test_XGB_pca, y_pred_XGB_pca)
-    data_XGB_pca = {'Accuracy' : [round(accuracy_XGB_pca, 4)],'Precision' : [round(precision_XGB_pca, 4)],'Recall' : [round(recall_XGB_pca, 4)],'F1-score' : [round(f1_XGB_pca, 4)],}
-    df_XGB_pca = pd.DataFrame(data_XGB_pca, index=model_list[7:8])
-    selected_models.append(df_XGB_pca)
-
-############################################################################
-if 'SVM_raw' in performance_select:
-    with st.spinner('Updating Report...'):
-        try:
-            y_pred_SVM_raw = st.session_state['y_pred_SVM_raw']
-            y_test_SVM_raw = st.session_state['y_test_SVM_raw']
+            SVM_raw_metric = st.session_state['SVM_raw_metric']
         except:
             st.write(':red[ SVM_raw 성능 데이터를 보내주세요]')
             st.stop()
-    accuracy_SVM_raw = metrics.accuracy_score(y_test_SVM_raw, y_pred_SVM_raw)
-    precision_SVM_raw = metrics.precision_score(y_test_SVM_raw, y_pred_SVM_raw)
-    recall_SVM_raw = metrics.recall_score(y_test_SVM_raw, y_pred_SVM_raw)
-    f1_SVM_raw = metrics.f1_score(y_test_SVM_raw, y_pred_SVM_raw)
-    data_SVM_raw = {'Accuracy' : [round(accuracy_SVM_raw, 4)],'Precision' : [round(precision_SVM_raw, 4)],'Recall' : [round(recall_SVM_raw, 4)],'F1-score' : [round(f1_SVM_raw, 4)],}
-    df_SVM_raw = pd.DataFrame(data_SVM_raw, index=model_list[8:9])
+            
+    df_SVM_raw = pd.DataFrame(SVM_raw_metric, index = ['정확도','정밀도','재현율','F1 점수', 'AUC'])
     selected_models.append(df_SVM_raw)
 
-if 'SVM_PCA' in performance_select:
+if '서포트벡터머신_PCA' in performance_select:
     with st.spinner('Updating Report...'):
         try:
-            y_pred_SVM_pca = st.session_state['y_pred_SVM_PCA']
-            y_test_SVM_pca = st.session_state['y_test_SVM_PCA']
+            SVM_pca_metric = st.session_state['SVM_pca_metric']
         except:
             st.write(':red[ SVM_pca 성능 데이터를 보내주세요]')
-    accuracy_SVM_pca = metrics.accuracy_score(y_test_SVM_pca, y_pred_SVM_pca)
-    precision_SVM_pca = metrics.precision_score(y_test_SVM_pca, y_pred_SVM_pca)
-    recall_SVM_pca = metrics.recall_score(y_test_SVM_pca, y_pred_SVM_pca)
-    f1_SVM_pca = metrics.f1_score(y_test_SVM_pca, y_pred_SVM_pca)
-    data_SVM_pca = {'Accuracy' : [round(accuracy_SVM_pca, 4)],'Precision' : [round(precision_SVM_pca, 4)],'Recall' : [round(recall_SVM_pca, 4)],'F1-score' : [round(f1_SVM_pca, 4)],}
-    df_SVM_pca = pd.DataFrame(data_SVM_pca, index=model_list[9:10])
+            
+    df_SVM_pca = pd.DataFrame(SVM_pca_metric, index = ['정확도','정밀도','재현율','F1 점수', 'AUC'])
     selected_models.append(df_SVM_pca)
+    
+############################################################################
+
+if '랜덤 포레스트_raw' in performance_select:
+    with st.spinner('Updating Report...'):
+        try:
+            RF_raw_metric = st.session_state['RF_raw_metric']
+        except:
+            st.write(':red[ randomforest_raw 성능 데이터를 보내주세요]')
+            st.stop()
+            
+    df_RF_raw = pd.DataFrame(RF_raw_metric, index = ['정확도','정밀도','재현율','F1 점수', 'AUC'])
+    selected_models.append(df_RF_raw)
+
+if '랜덤 포레스트_PCA' in performance_select:
+    with st.spinner('Updating Report...'):
+        try:
+            RF_pca_metric = st.session_state['RF_pca_metric']
+        except:
+            st.write(':red[ randomforest_pca 성능 데이터를 보내주세요]')
+            st.stop()
+            
+    df_RF_pca = pd.DataFrame(RF_pca_metric, index = ['정확도','정밀도','재현율','F1 점수', 'AUC'])
+    selected_models.append(df_RF_pca)
+    
+############################################################################
+if 'XGBOOST_raw' in performance_select:
+    with st.spinner('Updating Report...'):
+        try:
+            XGB_raw_metric = st.session_state['XGB_raw_metric']
+        except:
+            st.write(':red[ XGB_raw 성능 데이터를 보내주세요]')
+            st.stop()
+            
+    df_XGB_raw = pd.DataFrame(XGB_raw_metric, index = ['정확도','정밀도','재현율','F1 점수', 'AUC'])
+    selected_models.append(df_XGB_raw)
+
+if 'XGBOOST_PCA' in performance_select:
+    with st.spinner('Updating Report...'):
+        try:
+            XGB_pca_metric = st.session_state['XGB_pca_metric']
+        except:
+            st.write(':red[ XGB_pca 성능 데이터를 보내주세요]')
+            st.stop()
+            
+    df_XGB_pca = pd.DataFrame(XGB_pca_metric, index = ['정확도','정밀도','재현율','F1 점수', 'AUC'])
+    selected_models.append(df_XGB_pca)
+    
+############################################################################
+if 'Deep Neural Network_raw' in performance_select:
+    with st.spinner('Updating Report...'):
+        try:
+            DNN_raw_metric = st.session_state['DNN_raw_metric']
+        except:
+            st.write(':red[ DNN_raw 성능 데이터를 보내주세요]')
+            st.stop()
+            
+    df_DNN_raw = pd.DataFrame(DNN_raw_metric, index = ['정확도','정밀도','재현율','F1 점수', 'AUC'])
+    selected_models.append(df_DNN_raw)
+
+if 'Deep Neural Network_PCA' in performance_select:
+    with st.spinner('Updating Report...'):
+        try:
+            DNN_pca_metric = st.session_state['DNN_pca_metric']
+        except:
+            st.write(':red[ DNN_pca 성능 데이터를 보내주세요]')
+            st.stop()
+            
+    df_DNN_pca = pd.DataFrame(DNN_pca_metric, index=['정확도','정밀도','재현율','F1 점수', 'AUC'])
+    selected_models.append(df_DNN_pca)
 
 ############################################################################
 if selected_models:
-    df_concat = pd.concat(selected_models)
-    st.table(df_concat.style.set_properties(**{'text-align': 'left','font-size': '18px','width': '250px','height': '50px'}).set_table_styles([{'selector': 'th', 'props': [('text-align', 'center'), ('font-size', '1.5em')]}]))
+    df_concat = pd.concat(selected_models, axis=1)
+    df_concat = df_concat.T
+    st.table(df_concat.style.set_properties(**{'text-align': 'left','font-size': '15px','width': '160px','height': '50px'}).set_table_styles([{'selector': 'th', 'props': [('text-align', 'center'), ('font-size', '1.5em')]}]))
 
 ############################################################################
+st.subheader('Predict')
+file_path = 'dataset/pred/'
+file = os.listdir(file_path)
+try:
+    data_list = file
+    data_select = st.multiselect('예측에 사용할 하나의 데이터 선택', data_list)
+
+    pre_df = pd.read_csv(os.path.join(file_path,data_select[0]))
+    
+    pre_new_df = pre_df.copy()
+
+    if st.session_state['TO_NUM'] == 1:
+        for col in pre_new_df.columns:
+            if pre_new_df.dtypes[col] == "O":
+                uni = pre_new_df[col].unique()
+                for i, val in enumerate(uni):
+                    pre_new_df[col] = pre_new_df[col].replace(val, i)
+
+    scaler = st.session_state['scaler']
+    scaler.fit(pre_new_df)
+    scaled_arr = scaler.transform(pre_new_df)
+    pre_new_df = pd.DataFrame(scaled_arr, columns=pre_new_df.columns)
+    st.write(pre_new_df)
+    
+except:
+    st.write('데이터를 선택해 주세요.')
+
+pred_model_list = ['로지스틱 회귀_raw','로지스틱 회귀_PCA', '서포트벡터머신_raw','서포트벡터머신_PCA', '랜덤 포레스트_raw', '랜덤 포레스트_PCA', 'XGBOOST_raw' ,'XGBOOST_PCA', 'Deep Neural Network_raw', 'Deep Neural Network_PCA']
+pred_select = st.multiselect('예측에 사용할 하나의 모델 선택', pred_model_list)
+
+############################################################################
+try:
+    if '로지스틱 회귀_raw' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                LR_raw = st.session_state['LR_raw']
+            except:
+                st.write(':red[ 로지스틱 회귀_raw 모델을 보내주세요]')
+                st.stop()
+
+            pred_data = pre_new_df.to_numpy()
+
+            pred = LR_raw.predict(pred_data)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+            
+############################################################################
+    if '로지스틱 회귀_PCA' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                LR_pca = st.session_state['LR_pca']
+            except:
+                st.write(':red[ 로지스틱 회귀_pca 모델을 보내주세요]')
+
+            compo = st.session_state['compo']
+
+            x_data = pre_new_df
+
+            do_pca = PCA(n_components=compo)
+            printcipalComponents = do_pca.fit_transform(pre_new_df)
+            pre_new_df = pd.DataFrame(data=printcipalComponents, columns = [f'PC{num+1}' for num in range(len(printcipalComponents[0]))])
+
+            pred_data = pre_new_df.to_numpy()
+
+            pred = LR_pca.predict(pred_data)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+            
+############################################################################
+    if '서포트벡터머신_raw' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                SVM_raw = st.session_state['SVM_raw']
+            except:
+                st.write(':red[ 서포트벡터머신_raw 모델을 보내주세요]')
+                st.stop()
+
+            pred_data = pre_new_df.to_numpy()
+
+            pred = SVM_raw.predict(pred_data)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+            
+############################################################################
+    if '서포트벡터머신_PCA' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                SVM_pca = st.session_state['SVM_pca']
+            except:
+                st.write(':red[ 서포트벡터머신_pca 모델을 보내주세요]')
+                st.stop()
+                
+            compo = st.session_state['compo']
+
+            x_data = pre_new_df
+
+            do_pca = PCA(n_components=compo)
+            printcipalComponents = do_pca.fit_transform(pre_new_df)
+            pre_new_df = pd.DataFrame(data=printcipalComponents, columns = [f'PC{num+1}' for num in range(len(printcipalComponents[0]))])
+
+            pred_data = pre_new_df.to_numpy()
+
+            pred = SVM_pca.predict(pred_data)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+            
+############################################################################
+    if '랜덤 포레스트_raw' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                RF_raw = st.session_state['RF_raw']
+            except:
+                st.write(':red[ 랜덤 포레스트_raw 모델을 보내주세요]')
+                st.stop()
+
+            pred_data = pre_new_df.to_numpy()
+
+            pred = RF_raw.predict(pred_data)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+            
+############################################################################
+    if '랜덤 포레스트_PCA' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                RF_pca = st.session_state['RF_pca']
+            except:
+                st.write(':red[ 랜덤 포레스트_pca 모델을 보내주세요]')
+                st.stop()
+                
+            compo = st.session_state['compo']
+
+            x_data = pre_new_df
+
+            do_pca = PCA(n_components=compo)
+            printcipalComponents = do_pca.fit_transform(pre_new_df)
+            pre_new_df = pd.DataFrame(data=printcipalComponents, columns = [f'PC{num+1}' for num in range(len(printcipalComponents[0]))])
+
+            pred_data = pre_new_df.to_numpy()
+
+            pred = RF_pca.predict(pred_data)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+            
+############################################################################
+    if 'XGBOOST_raw' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                XGB_raw = st.session_state['XGB_raw']
+            except:
+                st.write(':red[ XGBOOST_raw 모델을 보내주세요]')
+                st.stop()
+
+            pred_data = pre_new_df.to_numpy()
+
+            pred = XGB_raw.predict(x_test)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+            
+############################################################################
+    if 'XGBOOST_PCA' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                XGB_pca = st.session_state['XGB_pca']
+            except:
+                st.write(':red[ XGBOOST_pca 모델을 보내주세요]')
+                st.stop()
+                
+            compo = st.session_state['compo']
+
+            x_data = pre_new_df
+
+            do_pca = PCA(n_components=compo)
+            printcipalComponents = do_pca.fit_transform(pre_new_df)
+            pre_new_df = pd.DataFrame(data=printcipalComponents, columns = [f'PC{num+1}' for num in range(len(printcipalComponents[0]))])
+
+            pred_data = pre_new_df.to_numpy()
+            
+            pred = XGB_pca.predict(x_test)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+            
+############################################################################
+    if 'Deep Neural Network_raw' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                DNN_raw = st.session_state['DNN_raw']
+            except:
+                st.write(':red[ DNN_raw 모델을 보내주세요]')
+                st.stop()
+
+            pred_data = pre_new_df.to_numpy()
+
+            pred_data = pred_data.reshape(pred_data.shape[0],-1,1)
+            pred = DNN_raw.predict(pred_data)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+############################################################################
+    if 'Deep Neural Network_PCA' in pred_select:
+        with st.spinner('Updating Report...'):
+            try:
+                DNN_pca = st.session_state['DNN_pca']
+            except:
+                st.write(':red[ DNN_pca 모델을 보내주세요]')
+                st.stop()
+                
+            compo = st.session_state['compo']
+
+            x_data = pre_new_df
+
+            do_pca = PCA(n_components=compo)
+            printcipalComponents = do_pca.fit_transform(pre_new_df)
+            pre_new_df = pd.DataFrame(data=printcipalComponents, columns = [f'PC{num+1}' for num in range(len(printcipalComponents[0]))])
+
+            pred_data = pre_new_df.to_numpy()
+
+            pred_data = pred_data.reshape(pred_data.shape[0],-1,1)
+            pred = DNN_pca.predict(pred_data)
+
+            pred = pred.reshape(-1)
+
+            for y in range(len(pred)):
+                    if pred[y] >= 0.5:
+                        pred[y] = 1
+                    else:
+                        pred[y] = 0
+
+            pre_df['error'] = pred.astype('int')
+
+            if 1 in pred:
+                st.write('이 제품은 불량품이 될 가능성이 높습니다.')
+            else:
+                st.write('이 제품은 양품일 가능성이 높습니다.')
+
+            st.write(pre_df)
+############################################################################
+except:
+    st.write('데이터와 모델을 선택해주세요')
